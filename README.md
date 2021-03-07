@@ -6,6 +6,8 @@ Makes digital wire registration for smaller water facilities and similar in DK. 
 
 ### Server service
 
+[Documentation backend](./ler_2_server/backend_info.md)
+
 #### Requirements
 
 * MUST automatically interact with LER2.0
