@@ -1,12 +1,22 @@
-#![feature(proc_macro_hygiene, decl_macro)]
+extern crate reqwest;
+use serde_json::Value;
+use std::borrow::Borrow;
 
-#[macro_use] extern crate rocket;
-
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+async fn test_punchthrough() {
+    let response = reqwest::get("https://services.ler.dk/api/basicTest")
+        .await
+        .unwrap();
+    if response.status().is_success() {
+        let data = response.text().await.unwrap();
+        // println!("Response: {}", data);
+        let v: Value = serde_json::from_str(data.borrow()).unwrap();
+        println!("Confirmation: {:?}", v["StatusCode"]);
+    } else {
+        println!("Bad request");
+    }
 }
 
-fn main() {
-    rocket::ignite().mount("/", routes![index]).launch();
+#[tokio::main]
+async fn main() {
+    test_punchthrough().await;
 }

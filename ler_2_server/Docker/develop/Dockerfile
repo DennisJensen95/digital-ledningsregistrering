@@ -1,12 +1,14 @@
 FROM ubuntu:20.04
 
 RUN apt-get update && apt-get install -y curl
+RUN apt-get install -y wget
 RUN apt-get install build-essential -y
 
-RUN mkdir -p /user/turreta-rust-builder/src
-WORKDIR /user/turreta-rust-builder/src
+# Update new packages
+RUN apt-get update
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# Get Rust
+RUN curl https://sh.rustup.rs  -tlsv1 -sSf | bash -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 RUN rustup default nightly

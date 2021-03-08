@@ -1,0 +1,20 @@
+@startuml
+"Wire owner" -> "LER": Get requests
+"Wire owner" <-- "LER": (nothing new)
+LER <- "Dig actor": Create dig request
+LER --> "Dig actor": (Created)
+"Wire owner" -> LER: Retrieve requests (integration 10)
+"Dig actor" -> LER: Retrieve status on wire packages
+LER --> "Wire owner": (Request info)
+LER --> "Dig actor": (Status: request in process)
+"Wire owner" -> LER: Receit for request (11)
+"Dig actor" -> LER: Retrieve Status of Wire package (25)
+LER --> "Wire owner": (ok)
+LER --> "Dig actor": (Status: In progress)
+"Wire owner" -> LER: "Send dig request answers"
+LER --> "Wire owner": (ok)
+"Dig actor" -> LER: Retrieve status on wire packages (25)
+"Dig actor" <- LER: (Status: complete)
+"Dig actor" -> LER: Receit for wire package (26)
+"Dig actor" <-- LER: (ok) 
+@enduml

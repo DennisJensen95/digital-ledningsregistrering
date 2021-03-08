@@ -1,0 +1,4 @@
+@startuml
+Server -> "LER-2.0": GET/api/BasicTest - Check connection test
+Server -> "LER-2.0": GET/api/SecureTest - Security check
+@enduml
