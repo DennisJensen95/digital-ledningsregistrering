@@ -1,18 +1,29 @@
-FROM ubuntu:20.04
+FROM rust as planner
+WORKDIR app
+# We only pay the installation cost once, 
+# it will be cached from the second build onwards
+# To ensure a reproducible build consider pinning 
+# the cargo-chef version with `--version X.X.X`
+RUN cargo install cargo-chef 
+RUN pwd
+COPY . .
+RUN cargo chef prepare  --recipe-path recipe.json
 
-RUN apt-get update && apt-get install -y curl
-RUN apt-get install -y wget
-RUN apt-get install build-essential -y
+FROM rust as cacher
+WORKDIR app
+RUN cargo install cargo-chef
+COPY --from=planner /app/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
 
-# Update new packages
-RUN apt-get update
+FROM rust as builder
+WORKDIR app
+RUN ls
+COPY . .
+# Copy over the cached dependencies
+COPY --from=cacher /app/target target
+COPY --from=cacher /usr/local/cargo /usr/local/cargo
+RUN cargo build --release --bin ler_2_server
 
-# Get Rust
-RUN curl https://sh.rustup.rs  -tlsv1 -sSf | bash -s -- -y
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-RUN rustup default nightly
-
-ENV ROCKET_ADDRESS=0.0.0.0
-
-ENV ROCKET_PORT=8080
+FROM rust as runtime
+WORKDIR app
+COPY --from=builder /app/target/release/ler_2_server /usr/local/bin

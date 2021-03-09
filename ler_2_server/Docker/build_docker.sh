@@ -1,12 +1,12 @@
 case $1 in
 	deploy)
 		echo "Building deploy Docker"
-		docker build -t backend/develop $2 ./develop
-		docker build -t backend/deploy $2 ./deploy
+		docker build -t backend/develop -f Docker/develop/Dockerfile $2 .
+		docker build -t backend/deploy -f Docker/deploy/Dockerfile $2 .
 		;;
 	develop)
 		echo "Building develop Docker"
-		docker build -t backend/develop_2 $2 ./develop
+		docker build -t backend/develop -f Docker/develop/Dockerfile $2 .
 		;;
 	*)
 		echo "Please input deploy or develop"

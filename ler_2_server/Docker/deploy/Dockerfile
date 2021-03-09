@@ -1,6 +1,2 @@
-
 FROM backend/develop
-
-RUN cargo build
-
-CMD ["cargo", "run"]
+ENTRYPOINT ["/usr/local/bin/ler_2_server"]

@@ -1,5 +1,5 @@
 [package]
-name = "ler_2_backend"
+name = "ler_2_server"
 version = "0.1.0"
 authors = ["Dennis <ngh1adj95@hotmail.com>"]
 edition = "2018"
