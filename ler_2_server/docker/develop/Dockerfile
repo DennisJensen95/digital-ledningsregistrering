@@ -27,3 +27,5 @@ RUN cargo build --release --bin ler_2_server
 FROM rust as runtime
 WORKDIR app
 COPY --from=builder /app/target/release/ler_2_server /usr/local/bin
+
+RUN rustup component add rustfmt
