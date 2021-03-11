@@ -1,149 +1,147 @@
 static LER_API_VERSION_4: &'static str = "v4";
 static LER_API_VERSION_1: &'static str = "v1";
 
-static LER_API_PRODUCTION: &'static str = "https://services.ler.dk/";
-static LER_API_TEST: &'static str = "https://services-extest.ler.dk/";
+pub static LER_API_PRODUCTION: &'static str = "https://services.ler.dk";
+pub static LER_API_TEST: &'static str = "https://services-extest.ler.dk";
 
-struct LEREndpoints {
-    basicTest: String,
-    secureTest: String,
-    request: String,
-    requestId: String,
-    requestReceivedId: String,
-    digRequest: String,
-    digRequestAnswerId: String,
-    wirePackageId: String,
-    wirePackageStatusId: String,
-    wirePackageStatus: String,
-    wirePackageReceivedId: String,
-    digRequestReceitId: String,
-    wirePackageMapShowId: String,
-    digDamage: String,
-    interestArea: String,
-    errorCodes: String,
-    errorCodeId: String,
+pub struct LEREndpoints {
+    pub basic_test: String,
+    pub secure_test: String,
+    pub request: String,
+    pub request_id: String,
+    pub request_received_id: String,
+    pub dig_request: String,
+    pub dig_request_answer_id: String,
+    pub wire_package_id: String,
+    pub wire_package_status_id: String,
+    pub wire_package_status: String,
+    pub wire_package_received_id: String,
+    pub dig_request_receit_id: String,
+    pub wire_package_map_show_id: String,
+    pub dig_damage: String,
+    pub interest_area: String,
+    pub error_codes: String,
+    pub error_code_id: String,
 }
 
-impl Default for LEREndpoints {
-    fn default() -> Self {
+impl LEREndpoints {
+    pub fn default(base_url: &str) -> LEREndpoints {
         LEREndpoints {
-            basicTest: format!(
+            basic_test: format!(
                 "{}/{}/{}",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 &String::from("basicTest")
             ),
-            secureTest: format!(
+            secure_test: format!(
                 "{}/{}/{}",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
-                &String::from("basicTest")
+                &String::from("secureTest")
             ),
             request: format!(
                 "{}/{}/{}/{}",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_4,
                 &String::from("anmodning")
             ),
-            requestId: format!(
+            request_id: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_4,
                 &String::from("anmodning")
             ),
-            requestReceivedId: format!(
+            request_received_id: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_4,
                 &String::from("anmodningModtaget")
             ),
-            digRequest: format!(
+            dig_request: format!(
                 "{}/{}/{}/{}",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("graveforespoergsel")
             ),
-            digRequestAnswerId: format!(
+            dig_request_answer_id: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("graveforespoergsel")
             ),
-            wirePackageId: format!(
+            wire_package_id: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("ledningspakke")
             ),
-            wirePackageStatus: format!(
+            wire_package_status: format!(
                 "{}/{}/{}/{}",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("ledningspakkeStatus")
             ),
-            wirePackageStatusId: format!(
+            wire_package_status_id: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("ledningspakkeStatus")
             ),
-            wirePackageReceivedId: format!(
+            wire_package_received_id: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("ledningspakkeModtaget")
             ),
-            digRequestReceitId: format!(
+            dig_request_receit_id: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("graveforespoergselKvittering")
             ),
-            wirePackageMapShowId: format!(
+            wire_package_map_show_id: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("ledningspakkeKortviser")
             ),
-            digDamage: format!(
+            dig_damage: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("graveskade")
             ),
-            interestArea: format!(
+            interest_area: format!(
                 "{}/{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 LER_API_VERSION_1,
                 &String::from("interesseomraade")
             ),
-            errorCodes: format!(
+            error_codes: format!(
                 "{}/{}/{}",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 &String::from("ErrorCodes")
             ),
-            errorCodeId: format!(
+            error_code_id: format!(
                 "{}/{}/{}/",
-                LER_API_PRODUCTION,
+                base_url,
                 &String::from("api"),
                 &String::from("errorcodes")
             ),
         }
     }
 }
-
-pub static ENDPOINTS: LEREndpoints = LEREndpoints::default();

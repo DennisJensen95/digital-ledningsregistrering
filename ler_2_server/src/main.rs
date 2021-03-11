@@ -11,6 +11,7 @@ extern crate env_logger;
 #[tokio::main]
 async fn main() {
     logger::init_logger();
-    debug!("Succesfully initalized logger");
-    client::punch_through().await;
+    let endpoints = ler_endpoints::LEREndpoints::default(ler_endpoints::LER_API_TEST);
+    client::punch_through(&endpoints).await;
+    client::secure_punch_through(&endpoints).await;
 }

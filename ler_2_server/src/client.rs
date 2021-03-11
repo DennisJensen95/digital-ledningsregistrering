@@ -1,12 +1,9 @@
 use crate::ler_endpoints;
-
 extern crate reqwest;
 
-pub async fn punch_through() -> bool {
+pub async fn punch_through(endpoints: &ler_endpoints::LEREndpoints) -> bool {
     debug!("Checking for live connection");
-    let response = reqwest::get("https://services.ler.dk/api/basicTest")
-        .await
-        .unwrap();
+    let response = reqwest::get(&endpoints.basic_test).await.unwrap();
     if response.status().is_success() {
         return true;
     } else {
@@ -14,11 +11,9 @@ pub async fn punch_through() -> bool {
     }
 }
 
-pub async fn secure_punch_through() -> bool {
+pub async fn secure_punch_through(endpoints: &ler_endpoints::LEREndpoints) -> bool {
     debug!("Checking secure live connection");
-    let response = reqwest::get("https://services.ler.dk/api/secureTest")
-        .await
-        .unwrap();
+    let response = reqwest::get(&endpoints.secure_test).await.unwrap();
     if response.status().is_success() {
         return true;
     } else {
@@ -30,14 +25,16 @@ pub async fn secure_punch_through() -> bool {
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
-
+    use ler_endpoints::LER_API_TEST;
     #[tokio::test]
     async fn test_punch_through() {
-        assert!(punch_through().await);
+        let endpoints = ler_endpoints::LEREndpoints::default(LER_API_TEST);
+        assert!(punch_through(&endpoints).await);
     }
 
     #[tokio::test]
     async fn test_secure_punch_through() {
-        assert!(secure_punch_through().await);
+        let endpoints = ler_endpoints::LEREndpoints::default(LER_API_TEST);
+        assert!(secure_punch_through(&endpoints).await);
     }
 }
