@@ -1,0 +1,12 @@
+#docker-compose.yml (Base)
+version: '3.4'
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
