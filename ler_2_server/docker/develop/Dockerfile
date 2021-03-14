@@ -1,11 +1,7 @@
 FROM rust as planner
+
 WORKDIR app
-# We only pay the installation cost once, 
-# it will be cached from the second build onwards
-# To ensure a reproducible build consider pinning 
-# the cargo-chef version with `--version X.X.X`
 RUN cargo install cargo-chef 
-RUN pwd
 COPY . .
 RUN cargo chef prepare  --recipe-path recipe.json
 
