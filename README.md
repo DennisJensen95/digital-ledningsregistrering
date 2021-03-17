@@ -1,8 +1,13 @@
-# Digital Ledningsregistrering - LER2.0
+# Digital Ledningsregistrering - LER 2.0
 
 ## Service
 
 Makes digital wire registration for smaller water facilities and similar in DK. Hosts this data and communicates with LER2.0
+
+## Software Architecture
+The architecture behind the project and service of the product
+
+![](./doc/images/LER_2_0_Webservice_Architecture.png)
 
 ### Server service
 

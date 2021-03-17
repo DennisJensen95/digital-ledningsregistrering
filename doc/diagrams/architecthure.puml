@@ -1,0 +1,11 @@
+@startuml LER_2_0_Webservice_Architecture
+
+
+"LER 2.0 Service"  -down->  "DJenzen LER 2.0 Client"
+"DJenzen LER 2.0 Client" --> "LER 2.0 Service"
+"DJenzen LER 2.0 Client" --> "API"
+"DJenzen website" --> "API"
+-down-> "Client Database"
+--> "API"
+
+@enduml
