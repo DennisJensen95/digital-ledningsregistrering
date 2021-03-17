@@ -1,14 +1,6 @@
 #docker-compose.yml (Base)
 version: '3.4'
 services:
-  ler-server:
-    image: backend/ler-server:${TAG:-latest}
-    build:
-      context: ./ler_2_server
-      dockerfile: Dockerfile
-    depends_on:
-      - rust
-  
   db:
     image: postgres:latest
     restart: always 
@@ -18,14 +10,40 @@ services:
       - POSTGRES_DB=postgres
     ports:
       - 5432:5432
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:5432"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
 
+  ler-server:
+    image: backend/ler-server:${TAG:-latest}
+    restart: always
+    build:
+      context: ./ler_2_server
+      dockerfile: Dockerfile
+    depends_on:
+      - "rust"
+    links:
+      - db
+  
   ler-database:
     image: backend/ler-database:${TAG:-latest}
     build:
       context: ./ler_2_database
       dockerfile: Dockerfile
+    environment:
+      - RUST_BACKTRACE=1
+      - RUST_LOG=debug
+      - ROCKET_ADDRESS=0.0.0.0
+      - ROCKET_PORT=8000
+      - DATABASE_URL=postgres://username:password@db/postgres
+    ports:
+      - "8000:8000"
     depends_on:
       - rust-nightly
+    links:
+      - db
 
   rust-nightly:
     image: rustlang/rust:nightly

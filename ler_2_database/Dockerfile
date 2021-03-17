@@ -14,6 +14,7 @@ RUN cargo build --release --bin ler_2_database
 
 # Bundle Stage
 FROM rustlang/rust:nightly
+
 COPY --from=builder /usr/src/ler_2_database/target/release/ler_2_database /usr/local/bin
 USER 1000
 ENTRYPOINT ["/usr/local/bin/ler_2_database"]
