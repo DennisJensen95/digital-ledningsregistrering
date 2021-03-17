@@ -9,7 +9,7 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=postgres
     ports:
-      - 5432:5432
+      - 5433:5433
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:5432"]
         interval: 30s
