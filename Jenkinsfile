@@ -1,9 +1,9 @@
 pipeline {
-    agent { docker 'maven:3-alpine' } 
+    agent { label 'master' } 
     stages {
-        stage ("Test") {
+        stage ("Build applications") {
             steps {
-                sh 'echo test'
+                sh 'docker-compose build --parallel'
             }
         }
     }
