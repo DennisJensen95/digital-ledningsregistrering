@@ -1,18 +1,17 @@
 #![allow(proc_macro_derive_resolution_fallback)]
 
-use crate::schema::posts;
+use crate::schema::clients;
 
 #[derive(Queryable, AsChangeset, Serialize, Deserialize, Debug)]
-#[table_name = "posts"]
-pub struct Post {
+#[table_name = "clients"]
+pub struct Client {
     pub id: i32,
-    pub title: String,
-    pub body: String,
-    pub published: bool,
+    pub user_name: String,
+    pub data_file: String,
 }
 #[derive(Insertable, Serialize, Deserialize)]
-#[table_name = "posts"]
-pub struct NewPost {
-    pub title: String,
-    pub body: String,
+#[table_name = "clients"]
+pub struct NewClient {
+    pub user_name: String,
+    pub data_file: String,
 }

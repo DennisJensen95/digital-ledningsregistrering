@@ -1,27 +1,33 @@
 #![allow(proc_macro_derive_resolution_fallback)]
-use crate::sample::model::NewPost;
-use crate::sample::model::Post;
-use crate::schema::posts;
-use crate::schema::posts::dsl::*;
+use crate::sample::model::Client;
+use crate::sample::model::NewClient;
+use crate::schema::clients;
+use crate::schema::clients::dsl::*;
 use diesel;
 use diesel::prelude::*;
-pub fn create_post(new_post: NewPost, conn: &PgConnection) -> QueryResult<Post> {
-    diesel::insert_into(posts::table)
-        .values(&new_post)
-        .get_result(conn)
+pub fn create_client(new_client: NewClient, conn: &PgConnection) -> QueryResult<Client> {
+    return diesel::insert_into(clients::table)
+        .values(&new_client)
+        .get_result(conn);
 }
-pub fn show_posts(connection: &PgConnection) -> QueryResult<Vec<Post>> {
+pub fn show_clients(connection: &PgConnection) -> QueryResult<Vec<Client>> {
     //posts.filter(published.eq(true))
-    posts.limit(5).load::<Post>(&*connection)
+    return clients.limit(5).load::<Client>(&*connection);
 }
-pub fn get_post(post_id: i32, connection: &PgConnection) -> QueryResult<Post> {
-    posts::table.find(post_id).get_result::<Post>(connection)
+pub fn get_client(post_id: i32, connection: &PgConnection) -> QueryResult<Client> {
+    return clients::table
+        .find(post_id)
+        .get_result::<Client>(connection);
 }
-pub fn update_post(post_id: i32, post: Post, connection: &PgConnection) -> QueryResult<Post> {
-    diesel::update(posts::table.find(post_id))
-        .set(&post)
-        .get_result(connection)
+pub fn update_client(
+    client_id: i32,
+    client: Client,
+    connection: &PgConnection,
+) -> QueryResult<Client> {
+    return diesel::update(clients::table.find(client_id))
+        .set(&client)
+        .get_result(connection);
 }
-pub fn delete_post(post_id: i32, connection: &PgConnection) -> QueryResult<usize> {
-    diesel::delete(posts::table.find(post_id)).execute(connection)
+pub fn delete_client(client_id: i32, connection: &PgConnection) -> QueryResult<usize> {
+    return diesel::delete(clients::table.find(client_id)).execute(connection);
 }

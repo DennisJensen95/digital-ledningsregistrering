@@ -1,8 +1,7 @@
 table! {
-    posts (id) {
+    clients (id) {
         id -> Int4,
-        title -> Varchar,
-        body -> Text,
-        published -> Bool,
+        user_name -> Varchar,
+        data_file -> Text,
     }
 }

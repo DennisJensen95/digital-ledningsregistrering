@@ -5,13 +5,13 @@ pub fn create_routes() {
     rocket::ignite()
         .manage(connection::init_pool())
         .mount(
-            "/posts",
+            "/clients",
             routes![
-                sample::handler::all_posts,
-                sample::handler::create_post,
-                sample::handler::get_post,
-                sample::handler::update_post,
-                sample::handler::delete_post
+                sample::handler::all_clients,
+                sample::handler::create_client,
+                sample::handler::get_client,
+                sample::handler::update_client,
+                sample::handler::delete_client
             ],
         )
         .launch();
