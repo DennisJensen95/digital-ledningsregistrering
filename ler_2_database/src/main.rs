@@ -23,6 +23,5 @@ mod schema;
 fn main() {
     logger::init_logger();
     dotenv().ok();
-    debug!("Testing changes in src files");
     sample::router::create_routes();
 }
