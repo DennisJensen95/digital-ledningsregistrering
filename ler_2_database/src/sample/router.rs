@@ -11,7 +11,8 @@ pub fn create_routes() {
                 sample::handler::create_client,
                 sample::handler::get_client,
                 sample::handler::update_client,
-                sample::handler::delete_client
+                sample::handler::delete_client,
+                sample::handler::client_upload
             ],
         )
         .launch();

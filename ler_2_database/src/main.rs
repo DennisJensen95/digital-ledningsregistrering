@@ -7,6 +7,7 @@ extern crate r2d2_diesel;
 #[macro_use]
 extern crate rocket;
 extern crate rocket_contrib;
+extern crate multipart;
 #[macro_use]
 extern crate serde_derive;
 extern crate env_logger;
