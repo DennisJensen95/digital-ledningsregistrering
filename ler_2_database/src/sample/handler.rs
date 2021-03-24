@@ -124,9 +124,19 @@ fn process_entries(entries: Entries, mut out: &mut Vec<u8>) -> io::Result<()> {
     {
         let stdout = io::stdout();
         let tee = StdoutTee::new(&mut out, &stdout);
+        for (name, entries) in &entries.fields {
+            debug!("Field name {:?}", name);
+            for field in entries.iter() {
+                let mut data = field.data.readable()?;
+                let headers = &field.headers;
+                debug!("headers {:?}", headers);
+            }
+        }
 
         entries.write_debug(tee)?;
         debug!("{:?}", entries);
+        debug!("{:?}", entries.fields.get("name").unwrap()[0]);
+
         // entries.fields.get("data");
         // let mut data = entries.fields.get("data").unwrap();
         // io::copy(&mut , &mut tee)?;
