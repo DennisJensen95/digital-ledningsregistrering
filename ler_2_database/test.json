@@ -1,0 +1,40 @@
+{ "fields": {
+		"test": [
+			SavedField 
+			{ 
+				headers: FieldHeaders 
+				{ 
+					name: "test", filename: Some("test.json"), content_type: Some("application/json")
+				}, 
+				data: Bytes([
+					123,
+					10,
+					9,
+					34,
+					116,
+					101,
+					115,
+					116,
+					34,
+					58,
+					32,
+					34,
+					115,
+					111,
+					109,
+					101,
+					116,
+					104,
+					105,
+					110,
+					103,
+					34,
+					10,
+					125,
+					10
+				]),
+			}
+		]
+	}, "save_dir": Temp(TempDir { path: "/tmp/multipart-rsLO8d8w"
+	}), "fields_count": 1
+}

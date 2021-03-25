@@ -1,5 +1,5 @@
 # Build Stage
-FROM rustlang/rust:nightly AS builder
+FROM rust:latest AS builder
 WORKDIR /usr/src/
 
 RUN USER=root cargo new ler_2_database
@@ -13,7 +13,7 @@ COPY ./src ./src
 RUN cargo build --release --bin ler_2_database
 
 # Bundle Stage
-FROM rustlang/rust:nightly
+FROM rust:latest
 
 COPY --from=builder /usr/src/ler_2_database/target/release/ler_2_database /usr/local/bin
 USER 1000
