@@ -25,6 +25,7 @@ mod schema;
 fn main() {
     logger::init_logger();
     dotenv().ok();
+    // Initializing database connection
     db::init();
     sample::router::create_routes().expect("Could not initialize API endpoints");
 }
