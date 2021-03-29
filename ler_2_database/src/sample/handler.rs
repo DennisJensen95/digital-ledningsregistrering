@@ -1,85 +1,114 @@
-use std::env;
+// Third party imports
+use actix_multipart::Multipart;
+use actix_web::Error as ACTIX_ERROR;
+use actix_web::{web, HttpResponse, Responder};
+use chrono::{Datelike, Timelike};
+use futures::{StreamExt, TryStreamExt};
+use serde_json::json;
+use std::fs;
+use std::io::Write;
+use std::path::Path;
+use std::time::{SystemTime, UNIX_EPOCH};
 
-use diesel::result::Error;
-use rocket::http::Status;
-use rocket::response::status;
-use rocket_contrib::json::Json;
+// Application components
+use crate::sample::model::{Client, File, NewClient, User};
 
-use crate::connection::DbConn;
-use crate::sample;
-use crate::sample::model::Client;
-use crate::sample::model::NewClient;
+const UPLOAD_PATH: &str = "/opt/ler-2-service/data/";
 
-#[get("/")]
-pub fn all_clients(connection: DbConn) -> Result<Json<Vec<Client>>, Status> {
-    sample::repository::show_clients(&connection)
-        .map(|client| Json(client))
-        .map_err(|error| error_status(error))
+pub async fn index() -> impl Responder {
+    debug!("Hi");
+    HttpResponse::Ok().body("Hello sunshine!")
 }
 
-#[post("/", format = "application/json", data = "<new_client>")]
-pub fn create_client(
-    new_client: Json<NewClient>,
-    connection: DbConn,
-) -> Result<status::Created<Json<Client>>, Status> {
-    println!("here 0 {}", &new_client.user_name);
-    sample::repository::create_client(new_client.into_inner(), &connection)
-        .map(|client| client_created(client))
-        .map_err(|error| error_status(error))
+pub async fn all_clients() -> Result<HttpResponse, ACTIX_ERROR> {
+    let clients = Client::find_all().unwrap();
+    Ok(HttpResponse::Ok().json(clients))
 }
 
-// #[post("/data"), data="<data>"]
-
-#[get("/<id>")]
-pub fn get_client(id: i32, connection: DbConn) -> Result<Json<Client>, Status> {
-    sample::repository::get_client(id, &connection)
-        .map(|client| Json(client))
-        .map_err(|error| error_status(error))
+pub async fn create_client(new_client: web::Json<NewClient>) -> Result<HttpResponse, ACTIX_ERROR> {
+    let client = Client::create_client(new_client.into_inner());
+    Ok(HttpResponse::Ok().json(client.unwrap()))
 }
 
-#[put("/<id>", format = "application/json", data = "<client>")]
-pub fn update_client(
-    id: i32,
-    client: Json<Client>,
-    connection: DbConn,
-) -> Result<Json<Client>, Status> {
-    sample::repository::update_client(id, client.into_inner(), &connection)
-        .map(|client| Json(client))
-        .map_err(|error| error_status(error))
+pub async fn update_client(
+    id: web::Path<i32>,
+    client: web::Json<Client>,
+) -> Result<HttpResponse, ACTIX_ERROR> {
+    let client = Client::update(id.into_inner(), client.into_inner());
+    Ok(HttpResponse::Ok().json(client.unwrap()))
 }
 
-#[delete("/<id>")]
-pub fn delete_client(id: i32, connection: DbConn) -> Result<status::NoContent, Status> {
-    sample::repository::delete_client(id, &connection)
-        .map(|_| status::NoContent)
-        .map_err(|error| error_status(error))
+pub async fn delete_client(id: web::Path<i32>) -> Result<HttpResponse, ACTIX_ERROR> {
+    let deleted_client = Client::delete(id.into_inner());
+    Ok(HttpResponse::Ok().json(json!({"deleted": deleted_client.unwrap()})))
 }
 
-fn client_created(client: Client) -> status::Created<Json<Client>> {
-    println!("here final");
-    status::Created(
-        format!(
-            "{host}:{port}/client/{id}",
-            host = host(),
-            port = port(),
-            id = client.id
-        )
-        .to_string(),
-        Some(Json(client)),
-    )
-}
+pub async fn upload(
+    mut payload: Multipart,
+    info: web::Path<User>,
+) -> Result<HttpResponse, ACTIX_ERROR> {
+    debug!("Uploading data file from client");
+    // iterate over multipart stream
 
-fn host() -> String {
-    env::var("ROCKET_ADDRESS").expect("ROCKET_ADDRESS must be set")
-}
-
-fn port() -> String {
-    env::var("ROCKET_PORT").expect("ROCKET_PORT must be set")
-}
-
-fn error_status(error: Error) -> Status {
-    match error {
-        Error::NotFound => Status::NotFound,
-        _ => Status::InternalServerError,
+    let mut filename = "".to_string();
+    while let Ok(Some(mut field)) = payload.try_next().await {
+        let content_type = field.content_disposition().unwrap();
+        let user_dir = format!("{}{}", UPLOAD_PATH, info.name.to_string());
+        fs::create_dir_all(&user_dir)?;
+        let timestamp = chrono::offset::Utc::now();
+        let timestamp_name = format!(
+            "{}_{}_{}_{}:{}",
+            timestamp.year(),
+            timestamp.month(),
+            timestamp.day(),
+            timestamp.hour(),
+            timestamp.minute()
+        );
+        filename = format!(
+            "{}_{}",
+            timestamp_name,
+            content_type.get_filename().unwrap(),
+        );
+        let filepath = format!("{}/{}", &user_dir, sanitize_filename::sanitize(&filename));
+        // File::create is blocking operation, use thread pool
+        let mut f = web::block(|| std::fs::File::create(filepath))
+            .await
+            .unwrap();
+        // Field in turn is stream of *Bytes* object
+        while let Some(chunk) = field.next().await {
+            let data = chunk.unwrap();
+            // filesystem operations are blocking, we have to use thread pool
+            f = web::block(move || f.write_all(&data).map(|_| f)).await?;
+        }
     }
+    Ok(HttpResponse::Ok().json(&File {
+        name: filename,
+        time: SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_secs(),
+        err: "".to_string(),
+    }))
+}
+
+pub async fn download(info: web::Path<User>) -> HttpResponse {
+    debug!("Downloading from server");
+    let path = format!("{}/{}", UPLOAD_PATH, info.name.to_string());
+    if !Path::new(path.as_str()).exists() {
+        return HttpResponse::NotFound().json(&File {
+            name: info.name.to_string(),
+            time: SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap()
+                .as_secs(),
+            err: "file does not exists".to_string(),
+        });
+    }
+    let data = fs::read(path).unwrap();
+    HttpResponse::Ok()
+        .header(
+            "Content-Disposition",
+            format!("form-data; filename={}", info.name.to_string()),
+        )
+        .body(data)
 }

@@ -13,6 +13,8 @@ The architecture behind the project and service of the product
 
 [Documentation backend](./ler_2_server/backend_info.md)
 
+[Documentation database](./ler_2_database/database_info.md)
+
 #### Requirements
 
 * MUST automatically interact with LER2.0
