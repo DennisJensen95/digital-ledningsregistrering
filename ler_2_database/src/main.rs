@@ -1,5 +1,8 @@
+// Application imports
 #[macro_use]
 extern crate diesel;
+#[macro_use]
+extern crate diesel_migrations;
 extern crate actix_web;
 extern crate dotenv;
 extern crate r2d2;
@@ -10,9 +13,11 @@ extern crate env_logger;
 #[macro_use]
 extern crate log;
 
+// File imports
 use dotenv::dotenv;
 
-// mod connection;
+// Application libraries
+mod db;
 mod logger;
 mod sample;
 mod schema;
@@ -20,5 +25,6 @@ mod schema;
 fn main() {
     logger::init_logger();
     dotenv().ok();
-    sample::router::create_routes().expect("Test");
+    db::init();
+    sample::router::create_routes().expect("Could not initialize API endpoints");
 }

@@ -1,46 +1,47 @@
+// Third party imports
 use actix_multipart::Multipart;
 use actix_web::Error as ACTIX_ERROR;
 use actix_web::{web, HttpResponse, Responder};
 use chrono::{Datelike, Timelike};
 use futures::{StreamExt, TryStreamExt};
-use serde::{Deserialize, Serialize};
+use serde_json::json;
 use std::fs;
 use std::io::Write;
 use std::path::Path;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use std::env;
-
-use diesel::result::Error;
-
-// use crate::deprecated_connection::DbConn;
-use crate::sample;
-use crate::sample::model::Client;
-use crate::sample::model::NewClient;
+// Application components
+use crate::sample::model::{Client, File, NewClient, User};
 
 const UPLOAD_PATH: &str = "/opt/ler-2-service/data/";
-#[derive(Serialize, Deserialize)]
-struct File {
-    name: String,
-    time: u64,
-    err: String,
-}
-
-#[derive(Deserialize)]
-pub struct User {
-    name: String,
-}
 
 pub async fn index() -> impl Responder {
     debug!("Hi");
     HttpResponse::Ok().body("Hello sunshine!")
 }
 
-// pub fn all_clients(connection: DbConn) -> Result<Json<Vec<Client>>, Status> {
-//     sample::repository::show_clients(&connection)
-//         .map(|client| Json(client))
-//         .map_err(|error| error_status(error))
-// }
+pub async fn all_clients() -> Result<HttpResponse, ACTIX_ERROR> {
+    let clients = Client::find_all().unwrap();
+    Ok(HttpResponse::Ok().json(clients))
+}
+
+pub async fn create_client(new_client: web::Json<NewClient>) -> Result<HttpResponse, ACTIX_ERROR> {
+    let client = Client::create_client(new_client.into_inner());
+    Ok(HttpResponse::Ok().json(client.unwrap()))
+}
+
+pub async fn update_client(
+    id: web::Path<i32>,
+    client: web::Json<Client>,
+) -> Result<HttpResponse, ACTIX_ERROR> {
+    let client = Client::update(id.into_inner(), client.into_inner());
+    Ok(HttpResponse::Ok().json(client.unwrap()))
+}
+
+pub async fn delete_client(id: web::Path<i32>) -> Result<HttpResponse, ACTIX_ERROR> {
+    let deleted_client = Client::delete(id.into_inner());
+    Ok(HttpResponse::Ok().json(json!({"deleted": deleted_client.unwrap()})))
+}
 
 pub async fn upload(
     mut payload: Multipart,

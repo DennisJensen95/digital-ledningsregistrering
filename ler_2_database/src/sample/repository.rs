@@ -1,33 +1,40 @@
-#![allow(proc_macro_derive_resolution_fallback)]
-use crate::sample::model::Client;
-use crate::sample::model::NewClient;
-use crate::schema::clients;
-use crate::schema::clients::dsl::*;
+// Third party imports
+use crate::db;
 use diesel;
 use diesel::prelude::*;
-pub fn create_client(new_client: NewClient, conn: &PgConnection) -> QueryResult<Client> {
-    return diesel::insert_into(clients::table)
-        .values(&new_client)
-        .get_result(conn);
-}
-pub fn show_clients(connection: &PgConnection) -> QueryResult<Vec<Client>> {
-    //posts.filter(published.eq(true))
-    return clients.limit(5).load::<Client>(&*connection);
-}
-pub fn get_client(post_id: i32, connection: &PgConnection) -> QueryResult<Client> {
-    return clients::table
-        .find(post_id)
-        .get_result::<Client>(connection);
-}
-pub fn update_client(
-    client_id: i32,
-    client: Client,
-    connection: &PgConnection,
-) -> QueryResult<Client> {
-    return diesel::update(clients::table.find(client_id))
-        .set(&client)
-        .get_result(connection);
-}
-pub fn delete_client(client_id: i32, connection: &PgConnection) -> QueryResult<usize> {
-    return diesel::delete(clients::table.find(client_id)).execute(connection);
+
+// Application components
+use crate::sample::model::{Client, NewClient};
+use crate::schema::clients;
+
+impl Client {
+    pub fn find_all() -> Result<Vec<Self>, r2d2::Error> {
+        let conn = db::connection()?;
+        let clients_retrieved = clients::table.load::<Client>(&*conn);
+        Ok(clients_retrieved.unwrap())
+    }
+
+    pub fn create_client(client: NewClient) -> Result<Self, r2d2::Error> {
+        let conn = db::connection()?;
+        let client = NewClient::from(client);
+        let client = diesel::insert_into(clients::table)
+            .values(client)
+            .get_result(&*conn);
+        Ok(client.unwrap())
+    }
+
+    pub fn update(id: i32, client: Client) -> Result<Self, r2d2::Error> {
+        let conn = db::connection()?;
+        let client = diesel::update(clients::table)
+            .filter(clients::id.eq(id))
+            .set(client)
+            .get_result(&*conn);
+        Ok(client.unwrap())
+    }
+
+    pub fn delete(id: i32) -> Result<usize, r2d2::Error> {
+        let conn = db::connection()?;
+        let res = diesel::delete(clients::table.filter(clients::id.eq(id))).execute(&*conn);
+        Ok(res.unwrap())
+    }
 }
