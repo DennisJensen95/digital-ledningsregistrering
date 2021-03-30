@@ -6,7 +6,7 @@ RUN USER=root cargo new ler_2_database
 WORKDIR /usr/src/ler_2_database
 COPY Cargo.toml Cargo.lock ./
 COPY ./diesel.toml ./
-COPY ./migrations ./
+COPY ./migrations ./migrations
 RUN mkdir .cargo
 RUN cargo vendor > .cargo/config
 COPY ./src ./src
