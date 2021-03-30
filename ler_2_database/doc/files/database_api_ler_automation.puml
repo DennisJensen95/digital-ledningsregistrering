@@ -1,0 +1,11 @@
+@startuml 
+participant "LER server" as ler_server
+participant "LER Automation client" as client
+participant "Database API" as server
+
+client -> ler_server : Polling dig requests
+ler_server -> client : There is a new dig request
+client -> server : Area of interest
+server -> client : Area of interest data
+client -> ler_server : Response on dig request
+@enduml

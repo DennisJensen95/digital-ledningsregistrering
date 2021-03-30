@@ -1,0 +1,11 @@
+
+@startuml 
+participant "Wire owner client" as client 
+participant "Frontend website" as frontend
+participant "Database API" as server
+
+client -> frontend : Sign up
+frontend -> server : Create client
+server -> frontend : Sign up reponse
+
+@enduml
