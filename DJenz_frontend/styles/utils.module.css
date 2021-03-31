@@ -1,0 +1,44 @@
+.title {
+  text-align: center;
+  font: bold;
+  font:larger;
+  align-items: center;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.subTitle {
+  padding-top: 0;
+  text-align: center;
+  font: caption;
+  color: gray;
+  align-items: center;
+  align-self: center;
+  flex-direction: column;
+  margin: 0rem 10rem 0rem 10rem;
+}
+  
+  .colorInherit {
+    color: inherit;
+  }
+  
+  .padding1px {
+    padding-top: 1px;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .listItem {
+    margin: 0 0 1.25rem;
+  }
+  
+  .lightText {
+    color: #666;
+  }

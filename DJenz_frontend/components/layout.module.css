@@ -1,0 +1,80 @@
+.container {
+    max-width: 50rem;
+    padding: 0 1rem;
+    margin: 3rem auto 1rem;
+  }
+  
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .backToHome {
+    margin: 3rem 0 0;
+  }
+
+
+  /* Navigation bar */
+  .nav_bar {
+    position: relative;
+    flex: 1;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    -webkit-box-align: center;
+  }
+
+  .links {
+    overflow:hidden;
+    width:100%;
+    display: flex;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    z-index: 1;
+  }
+  
+  .link {
+    transition: color 0.2 ease;
+    color: grey;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+    text-align: center; 
+
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+    max-width: 1024px;
+    text-align: center;
+
+  }
+
+  .link:hover {
+    color: black;
+  }
+
+  .login_button {
+    color: #fff;
+    background: #0074de;
+    border: 2px;
+    border-color: #0074de;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 20px;
+  }
+
+  .login_button:hover {
+    cursor: pointer;
+    background: lightsteelblue;
+  }
+
+  .break_page {
+    width: 100%;
+    max-width: none;
+    padding: none;
+    margin: none;
+  }
