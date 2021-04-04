@@ -13,12 +13,15 @@ extern crate env_logger;
 #[macro_use]
 extern crate log;
 
+extern crate dxf;
+
 // File imports
 use dotenv::dotenv;
 
 // Application libraries
 mod db;
 mod logger;
+mod map;
 mod sample;
 mod schema;
 
@@ -27,5 +30,6 @@ fn main() {
     dotenv().ok();
     // Initializing database connection
     db::init();
+    map::map_data::crop_map();
     sample::router::create_routes().expect("Could not initialize API endpoints");
 }
