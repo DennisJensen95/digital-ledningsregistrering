@@ -1,0 +1,563 @@
+{
+	"info": {
+		"_postman_id": "68b4a589-ee55-4479-b6ca-26ec68944582",
+		"name": "ServiceGateway calls Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "10: hent anmodninger",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/v4/Anmodning/?transactionId={{$guid}}&requestId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v4",
+						"Anmodning",
+						""
+					],
+					"query": [
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "isSamfoeringsforespoergsel",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "interesseomraadenumre",
+							"value": "146",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11: Kvitter for anmodning",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/v4/anmodningModtaget/29?requestId={{$guid}}&transactionId={{$guid}}&indberetningsNr=2",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v4",
+						"anmodningModtaget",
+						"29"
+					],
+					"query": [
+						{
+							"key": "isSamfoeringsforespoergsel",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "tjenesteaftagerCvr",
+							"value": "12345678",
+							"disabled": true
+						},
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "indberetningsNr",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13: send graveforespørgselssvar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"base64data\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/graveforespoergselSvar/6273?transactionId={{$guid}}&requestId={{$guid}}&indberetningsNr=29",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"graveforespoergselSvar",
+						"6273"
+					],
+					"query": [
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "tjenesteaftagerCvr",
+							"value": "14814833",
+							"disabled": true
+						},
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "isSamfoeringsforespoergsel",
+							"value": "true",
+							"disabled": true
+						},
+						{
+							"key": "indberetningsNr",
+							"value": "29"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15: ledningspakkeStatus",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/ledningspakkeStatus/4102?requestId={{$guid}}&transactionId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ledningspakkeStatus",
+						"4102"
+					],
+					"query": [
+						{
+							"key": "erSamfoeringsforespoergsel",
+							"value": "false",
+							"disabled": true
+						},
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15: hent status på ledningspakke",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/ledningspakkeStatus/4102?requestId={{$guid}}&transactionId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ledningspakkeStatus",
+						"4102"
+					],
+					"query": [
+						{
+							"key": "erSamfoeringsforespoergsel",
+							"value": "false",
+							"disabled": true
+						},
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "16: hent ledningspakke",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/Ledningspakke/5108?requestId={{$guid}}&transactionId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Ledningspakke",
+						"5108"
+					],
+					"query": [
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "erSamfoeringsforespoergsel",
+							"value": "false",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "18: indberet graveskade",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"xKoordinat\" : \"575220.924\",\n\t\"yKoordinat\" : \"6224761.471\",\n\t\"projektion\" : \"EPSG:25832\",\n\t\"skadevolderType\" : \"2\",\n\t\"skadevolderCvr\" : \"\",\n\t\"skadesDato\" : \"12-09-2019\",\n\t\"skadesDatoUkendt\" : \"FALSE\",\n\t\"forsyningsart\" : \"10\",\n\t\"forsyningsartAnden\" : \"\",\n\t\"lerNummer\" : \"\",\n\t\"omfangFunktionsevne\" : \"0\",\n\t\"omfangNaermiljoe\" : \"1\",\n\t\"omfangOmkostningUdbedring\" : \"20000\",\n\t\"omfangOmkostningAdministration\" : \"1500\",\n\t\"aarsag\" : \"1;2\",\n\t\"bemaerkning\" : \"From integration18\"\n}"
+				},
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/Graveskade/?requestId={{$guid}}&transactionId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Graveskade",
+						""
+					],
+					"query": [
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "tjenesteaftagerCvr",
+							"value": "12345678",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "19: opret graveforespørgsel",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Gmlbase64data\": \"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48bGVyZ21sOmZlYXR1cmVDb2xsZWN0aW9uIHNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3Lmxlci5kay9sZXIgbGVyLnhzZCIgeG1sbnM6eHM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hIiB4bWxuczpmbj0iaHR0cDovL3d3dy53My5vcmcvMjAwNC8xMC94cGF0aC1mdW5jdGlvbnMiIHhtbG5zOnhkdD0iaHR0cDovL3d3dy53My5vcmcvMjAwNC8xMC94cGF0aC1kYXRhdHlwZXMiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmxlcmdtbD0iaHR0cDovL3d3dy5sZXIuZGsvbGVyIiB4bWxuczpnbWw9Imh0dHA6Ly93d3cub3Blbmdpcy5uZXQvZ21sIj4NCiAgPGdtbDpmZWF0dXJlTWVtYmVyPg0KICAgIDxsZXJnbWw6R3JhdmVmb3Jlc3A+DQogICAgICA8bGVyZ21sOmZpZD4xPC9sZXJnbWw6ZmlkPg0KCSAgPGxlcmdtbDplZ2V0X29yZHJlbnVtbWVyPjEyMzQ1NjwvbGVyZ21sOmVnZXRfb3JkcmVudW1tZXI+DQoJICA8bGVyZ21sOm9yZHJlbnVtbWVyX2lra2VfYW5naXZldD5mYWxzZTwvbGVyZ21sOm9yZHJlbnVtbWVyX2lra2VfYW5naXZldD4NCiAgICAgIDxsZXJnbWw6Z3JhdmVhcnRfaWQ+MSwyLDMsNCw5OTwvbGVyZ21sOmdyYXZlYXJ0X2lkPg0KCSAgPGxlcmdtbDpncmF2ZWFydF9hbmRldD5lbiBhbmRlbiBhcnQ8L2xlcmdtbDpncmF2ZWFydF9hbmRldD4NCiAgICAgIDxsZXJnbWw6Z3JhdmVwZXJpb2RlX2ZyYT4yMDIwLTExLTI0PC9sZXJnbWw6Z3JhdmVwZXJpb2RlX2ZyYT4NCiAgICAgIDxsZXJnbWw6Z3JhdmVwZXJpb2RlX3RpbD4yMDIwLTEyLTExPC9sZXJnbWw6Z3JhdmVwZXJpb2RlX3RpbD4NCiAgICAgIDxsZXJnbWw6YmVtYWVya25pbmc+dGthbSBpbnQxOTwvbGVyZ21sOmJlbWFlcmtuaW5nPg0KCSAgPGxlcmdtbDpmb3JtYWFsX2lkPjk5PC9sZXJnbWw6Zm9ybWFhbF9pZD4NCgkgIDxsZXJnbWw6Zm9ybWFhbF9hbmRldD5ldCBhbmRldCBmb3Jtw6VsPC9sZXJnbWw6Zm9ybWFhbF9hbmRldD4NCgkgIDxsZXJnbWw6Zm9yc3luaW5nc2FydF9pZD4xLDIsNyw4LDk5PC9sZXJnbWw6Zm9yc3luaW5nc2FydF9pZD4NCgkgIDxsZXJnbWw6Zm9yc3luaW5nc2FydF9hbmRldD5lbiBzcMOmbmRlbmRlIGZvcnN5bmluZ3NhcnQ8L2xlcmdtbDpmb3JzeW5pbmdzYXJ0X2FuZGV0Pg0KCSAgPGxlcmdtbDpwYXBpcmZvcm1hdF9pZD4xPC9sZXJnbWw6cGFwaXJmb3JtYXRfaWQ+DQoJICA8bGVyZ21sOmRpZ2l0YWxmb3JtYXRfaWQ+MiwzPC9sZXJnbWw6ZGlnaXRhbGZvcm1hdF9pZD4NCgkgIDxsZXJnbWw6a29udGFrdHBlcnNvbj5wcml2YXRAcHJpdmF0LmRrPC9sZXJnbWw6a29udGFrdHBlcnNvbj4NCiAgICAgIDxsZXJnbWw6cG9seWdvblByb3BlcnR5PjxnbWw6UG9seWdvbiBzcnNOYW1lPSJFUFNHOjI1ODMyIiA+PGdtbDpvdXRlckJvdW5kYXJ5SXM+PGdtbDpMaW5lYXJSaW5nPjxnbWw6Y29vcmRpbmF0ZXM+NzIxOTU3LjAyLDYxNzg5MjQuMTAyNSA3MjIwMzMuMDIsNjE3ODkwOS43MDI1IDcyMTk3OC42Miw2MTc4OTk4LjUwMjUgNzIyMDQ3LjQyLDYxNzg5ODYuNTAyNSA3MjE5NTcuMDIsNjE3ODkyNC4xMDI1PC9nbWw6Y29vcmRpbmF0ZXM+PC9nbWw6TGluZWFyUmluZz48L2dtbDpvdXRlckJvdW5kYXJ5SXM+PC9nbWw6UG9seWdvbj48L2xlcmdtbDpwb2x5Z29uUHJvcGVydHk+DQogICAgPC9sZXJnbWw6R3JhdmVmb3Jlc3A+DQogIDwvZ21sOmZlYXR1cmVNZW1iZXI+DQo8L2xlcmdtbDpmZWF0dXJlQ29sbGVjdGlvbj4=\"\r\n}"
+				},
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/Graveforespoergsel/?transactionId={{$guid}}&requestId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Graveforespoergsel",
+						""
+					],
+					"query": [
+						{
+							"key": "erSamfoeringsforespoergsel",
+							"value": "false",
+							"disabled": true
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "24: hent graveforespoergselKvittering",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/GraveforespoergselKvittering/4102?requestId={{$guid}}&transactionId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"GraveforespoergselKvittering",
+						"4102"
+					],
+					"query": [
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "erSamfoeringsforespoergsel",
+							"value": "false",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "25: ledningspakkeStatus list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/ledningspakkeStatus/?transactionId={{$guid}}&requestId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ledningspakkeStatus",
+						""
+					],
+					"query": [
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "erSamfoeringsforespoergsel",
+							"value": "false",
+							"disabled": true
+						},
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "26: kvitter for ledningspakke",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/ledningspakkeModtaget/4102?requestId={{$guid}}&transactionId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ledningspakkeModtaget",
+						"4102"
+					],
+					"query": [
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "27: opret interesseområde",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{hostsgw}}/api/v1/interesseomraade/?requestId={{$guid}}&transactionId={{$guid}}",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"interesseomraade",
+						""
+					],
+					"query": [
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "tjenesteaftagerCvr",
+							"value": "12345678",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "28: hent anmodning",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/v4/Anmodning/4304?requestId={{$guid}}&transactionId={{$guid}}&indberetningsNr=33",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"v4",
+						"Anmodning",
+						"4304"
+					],
+					"query": [
+						{
+							"key": "requestId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "transactionId",
+							"value": "{{$guid}}"
+						},
+						{
+							"key": "indberetningsNr",
+							"value": "33"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Basic Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/BasicTest",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"BasicTest"
+					],
+					"query": [
+						{
+							"key": "erSamfoeringsforespoergsel",
+							"value": "false",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Secure Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostsgw}}/api/SecureTest",
+					"host": [
+						"{{hostsgw}}"
+					],
+					"path": [
+						"api",
+						"SecureTest"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
