@@ -1,9 +1,7 @@
-use env_logger::Builder;
-use log::LevelFilter;
+use env_logger::Env;
 
 pub fn init_logger() {
-    let mut log_builder = Builder::from_default_env();
-    log_builder.filter_level(LevelFilter::Debug);
-    log_builder.init();
+    let log = Env::new().default_filter_or("warn");
+    env_logger::init_from_env(log);
     debug!("Succesfully initalized logger");
 }

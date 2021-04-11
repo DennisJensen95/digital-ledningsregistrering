@@ -16,37 +16,44 @@ services:
         timeout: 10s
         retries: 5
 
-  ler-server:
-    image: backend/ler-server:${TAG:-latest}
+  ler_2_server:
+    image: backend/ler_2_server:${TAG:-latest}
     restart: always
     build:
       context: ./ler_2_server
       dockerfile: Dockerfile
     depends_on:
-      - "rust"
+      - rust
     links:
       - db
   
-  ler-database:
-    image: backend/ler-database:${TAG:-latest}
+  ler_2_database:
+    image: backend/ler_2_database:${TAG:-latest}
     build:
       context: ./ler_2_database
       dockerfile: Dockerfile
+    ports:
+      - 8000:8000
     environment:
+      - DATABASE_URL=postgresql://username:password@db:5432/ler_2_database
       - RUST_BACKTRACE=1
       - RUST_LOG=debug
-      - ROCKET_ADDRESS=0.0.0.0
-      - ROCKET_PORT=8000
-      - DATABASE_URL=postgres://username:password@db/postgres
-    ports:
-      - "8000:8000"
+      - RUSTFLAGS=-Clinker=musl-gcc
     depends_on:
-      - rust-nightly
+      - rust
+      - alpine
     links:
       - db
-
-  rust-nightly:
-    image: rustlang/rust:nightly
-
+  
+  frontend:
+    image: frontend/djenzen:${TAG:-latest}
+    build: 
+      context: ./DJenz_frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+  
   rust:
-    image: rust
+    image: rust:latest
+  alpine:
+    image: alpine:latest

@@ -1,10 +1,11 @@
 // Third party imports
 use crate::db;
+use argon2::{self, Config};
 use diesel;
 use diesel::prelude::*;
 
 // Application components
-use crate::sample::model::{Client, NewClient};
+use crate::sample::model::{Client, ClientAuth, NewClient};
 use crate::schema::clients;
 
 impl Client {
@@ -14,8 +15,42 @@ impl Client {
         Ok(clients_retrieved.unwrap())
     }
 
-    pub fn create_client(client: NewClient) -> Result<Self, r2d2::Error> {
+    pub fn find_client(email: String) -> Result<Self, r2d2::Error> {
         let conn = db::connection()?;
+        let client = clients::table
+            .filter(clients::email.eq(email))
+            .get_result(&*conn);
+
+        Ok(client.unwrap())
+    }
+
+    pub fn auth(client: ClientAuth) -> Result<Client, argon2::Error> {
+        let conn = db::connection().unwrap();
+        let database_client = clients::table
+            .filter(clients::email.eq(client.email))
+            .get_result(&*conn);
+
+        let client_data = match database_client {
+            Ok(database_client) => Client::from(database_client),
+            Err(e) => {
+                debug!("{:?}", e);
+                return Err(argon2::Error::IncorrectType);
+            }
+        };
+
+        let matches = argon2::verify_encoded(&client_data.password, client.password.as_bytes());
+        if matches.unwrap() {
+            Ok(client_data)
+        } else {
+            Err(argon2::Error::DecodingFail)
+        }
+    }
+
+    pub fn create_client(mut client: NewClient) -> Result<Self, r2d2::Error> {
+        let conn = db::connection()?;
+        let salt = b"randomsalt";
+        let config = Config::default();
+        client.password = argon2::hash_encoded(client.password.as_bytes(), salt, &config).unwrap();
         let client = NewClient::from(client);
         let client = diesel::insert_into(clients::table)
             .values(client)
