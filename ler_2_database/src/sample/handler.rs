@@ -11,7 +11,7 @@ use std::path::Path;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 // Application components
-use crate::sample::model::{Client, File, NewClient, User};
+use crate::sample::model::{Client, ClientAuth, File, NewClient};
 
 const UPLOAD_PATH: &str = "/opt/ler-2-service/data/";
 
@@ -25,9 +25,27 @@ pub async fn all_clients() -> Result<HttpResponse, ACTIX_ERROR> {
     Ok(HttpResponse::Ok().json(clients))
 }
 
+pub async fn get_client_data(email: web::Path<String>) -> Result<HttpResponse, ACTIX_ERROR> {
+    let client = Client::find_client(email.into_inner()).unwrap();
+    Ok(HttpResponse::Ok().json(client))
+}
+
 pub async fn create_client(new_client: web::Json<NewClient>) -> Result<HttpResponse, ACTIX_ERROR> {
     let client = Client::create_client(new_client.into_inner());
+    debug!("Creating client");
     Ok(HttpResponse::Ok().json(client.unwrap()))
+}
+
+pub async fn auth_client(client: web::Json<ClientAuth>) -> Result<HttpResponse, ACTIX_ERROR> {
+    let client_data = Client::auth(client.into_inner());
+
+    match client_data {
+        Ok(client_data) => return Ok(HttpResponse::Ok().json(client_data)),
+        Err(e) => {
+            debug!("Authentication failed: {:?}", e);
+            return Ok(HttpResponse::Unauthorized().body("Unauthenticated"));
+        }
+    }
 }
 
 pub async fn update_client(
@@ -45,15 +63,15 @@ pub async fn delete_client(id: web::Path<i32>) -> Result<HttpResponse, ACTIX_ERR
 
 pub async fn upload(
     mut payload: Multipart,
-    info: web::Path<User>,
+    name: web::Path<String>,
 ) -> Result<HttpResponse, ACTIX_ERROR> {
-    debug!("Uploading data file from client");
+    debug!("Uploading data file from client: {:?}", name);
     // iterate over multipart stream
 
     let mut filename = "".to_string();
     while let Ok(Some(mut field)) = payload.try_next().await {
         let content_type = field.content_disposition().unwrap();
-        let user_dir = format!("{}{}", UPLOAD_PATH, info.name.to_string());
+        let user_dir = format!("{}{}", UPLOAD_PATH, name);
         fs::create_dir_all(&user_dir)?;
         let timestamp = chrono::offset::Utc::now();
         let timestamp_name = format!(
@@ -91,12 +109,12 @@ pub async fn upload(
     }))
 }
 
-pub async fn download(info: web::Path<User>) -> HttpResponse {
+pub async fn download(name: web::Path<String>) -> HttpResponse {
     debug!("Downloading from server");
-    let path = format!("{}/{}", UPLOAD_PATH, info.name.to_string());
+    let path = format!("{}/{}", UPLOAD_PATH, name.to_string());
     if !Path::new(path.as_str()).exists() {
         return HttpResponse::NotFound().json(&File {
-            name: info.name.to_string(),
+            name: name.to_string(),
             time: SystemTime::now()
                 .duration_since(UNIX_EPOCH)
                 .unwrap()
@@ -108,7 +126,7 @@ pub async fn download(info: web::Path<User>) -> HttpResponse {
     HttpResponse::Ok()
         .header(
             "Content-Disposition",
-            format!("form-data; filename={}", info.name.to_string()),
+            format!("form-data; filename={}", name.to_string()),
         )
         .body(data)
 }

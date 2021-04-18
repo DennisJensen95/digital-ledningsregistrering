@@ -31,15 +31,16 @@ export default function Layout({ children, home }) {
                         <a className={styles.links} href={'/'}>
                             <Image width="164" height="62" src="/logo/facebook_cover_photo_1.png" />
                         </a>
-                        <a className={styles.link} href={'/kontakt'}>
-                            Kontakt
-                    </a>
                         {!session && <>
+                            <a className={styles.link} href={'/kontakt'}>Kontakt</a>
                             <button className={styles.login_button} onClick={() => signIn()}>Login</button>
                         </>}
                         {session && <>
-                            <a className={styles.link} href={'/'}>Profile</a>
+                            <a className={styles.link} href={'/dashboard'}>Oversigt</a>
+                            <a className={styles.link} href={'/profile'}>Profil</a>
+                            <a className={styles.link} href={'/kontakt'}>Kontakt</a>
                             <button className={styles.login_button} onClick={() => signOut()}>Logout</button>
+
                         </>}
                     </div>
                 </nav>

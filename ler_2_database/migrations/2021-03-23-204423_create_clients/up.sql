@@ -1,6 +1,10 @@
 CREATE TABLE clients
 (
     id SERIAL PRIMARY KEY,
-    user_name VARCHAR NOT NULL,
-    data_file TEXT NOT NULL
+    company VARCHAR NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    data_file TEXT NOT NULL DEFAULT 'unknown',
+    password TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 )
