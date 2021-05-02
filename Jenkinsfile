@@ -13,9 +13,9 @@ pipeline {
                         sh 'docker-compose build ler_2_database'
                     }
                 }
-                stage ("Build ler_2_server") {
+                stage ("Build ler_2_broker") {
                     steps {
-                        sh 'docker-compose build ler_2_server'
+                        sh 'docker-compose build ler_2_broker'
                     }
                 }
             }

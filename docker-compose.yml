@@ -16,11 +16,11 @@ services:
         timeout: 10s
         retries: 5
 
-  ler_2_server:
-    image: backend/ler_2_server:${TAG:-latest}
+  ler_2_broker:
+    image: backend/ler_2_broker:${TAG:-latest}
     restart: always
     build:
-      context: ./ler_2_server
+      context: ./ler_2_broker
       dockerfile: Dockerfile
     depends_on:
       - rust

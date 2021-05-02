@@ -1,0 +1,4 @@
+{
+    "python.pythonPath": "/home/dennis/miniconda3/envs/ler_2_broker/bin/python",
+    "python.formatting.provider": "black"
+}
